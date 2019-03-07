@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--shiro的相关配置-->
+    <!--配置密码加密的配置,shiro自定义realm-->
+    <bean class="com.itbaizhan.realm.LoginRealm" id="LoginRealm">
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!--使用加密的方式-->
+                <property name="hashAlgorithmName" value="md5"/>
+                <!--密码加密迭代的次数-->
+                <property name="hashIterations" value="1024"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--配置shiro相关的bean-->
+    <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" id="securityManager">
+        <property name="realm" ref="LoginRealm"/>
+    </bean>
+    <!--配置shiro的filter-->
+    <bean class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" id="shiroFilter">
+        <!--拦截的路径,即没有的登录的用户访问登录页面时跳转的页面-->
+        <property name="loginUrl" value="/login"/>
+        <!--引用shiro的bean的配置-->
+        <property name="securityManager" ref="securityManager"/>
+        <!--配置过滤规则，从上到下的匹配-->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--anon表示放行登录的请求-->
+                /doLogin=anon
+                <!--对所有的路径进行过滤验证-->
+                /**=authc
+            </value>
+        </property>
+    </bean>
+</beans>

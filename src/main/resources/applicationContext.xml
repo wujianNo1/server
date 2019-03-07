@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--在该文件中进行spring的相关配置-->
+    <!--配置包扫描-->
+    <!--use-default-filters 属性的默认值为 true，
+    即使用默认的 Filter 进行包扫描，而默认的 Filter 对标有 @Service,@Controller和@Repository 的注解的类进行扫描,
+    希望spring不扫描带有@controller注解标注的类，扫描其他注解标注的类
+    所以设置context:exclude-filter子标签设置不扫描带有@controller注解的类-->
+    <context:component-scan base-package="com.itbaizhan" use-default-filters="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--spring中引入shiro的配置-->
+    <import resource="classpath:shiro-config.xml"/>
+    <!--引入mybatis的配置-->
+    <import resource="classpath:mybatis-config.xml"/>
+
+    <!--配置事务-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:advice id="interceptor" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="update*"/>
+            <tx:method name="insert*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--声明事务的切入点-->
+    <aop:config>
+        <aop:pointcut id="dnf" expression="execution(* com.itbaizhan.service.*.*(..))"/>
+        <aop:advisor advice-ref="interceptor" pointcut-ref="dnf"/>
+    </aop:config>
+</beans>

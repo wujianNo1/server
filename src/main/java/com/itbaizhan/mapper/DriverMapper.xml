@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbaizhan.mapper.DriverMapper" >
+  <resultMap id="BaseResultMap" type="com.itbaizhan.pojo.Driver" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="driverName" property="drivername" jdbcType="VARCHAR" />
+    <result column="idCard" property="idcard" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="carNo" property="carno" jdbcType="VARCHAR" />
+    <result column="allowCarryVolume" property="allowcarryvolume" jdbcType="INTEGER" />
+    <result column="allowCarryWeight" property="allowcarryweight" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="carType" property="cartype" jdbcType="VARCHAR" />
+    <result column="carLength" property="carlength" jdbcType="INTEGER" />
+    <result column="carDept" property="cardept" jdbcType="VARCHAR" />
+    <result column="carDeptTel" property="cardepttel" jdbcType="VARCHAR" />
+    <result column="carWidth" property="carwidth" jdbcType="INTEGER" />
+    <result column="goodsHeight" property="goodsheight" jdbcType="INTEGER" />
+    <result column="carFrameNo" property="carframeno" jdbcType="VARCHAR" />
+    <result column="engineNo" property="engineno" jdbcType="VARCHAR" />
+    <result column="companyCar" property="companycar" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.itbaizhan.pojo.DriverWithBLOBs" extends="BaseResultMap" >
+    <result column="driveLicence" property="drivelicence" jdbcType="LONGVARCHAR" />
+    <result column="runLicence" property="runlicence" jdbcType="LONGVARCHAR" />
+    <result column="bizLicence" property="bizlicence" jdbcType="LONGVARCHAR" />
+    <result column="insuranceCard" property="insurancecard" jdbcType="LONGVARCHAR" />
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <select id="getAllDrivers" resultMap="ResultMapWithBLOBs">
+    select * from driver;
+  </select>
+  <sql id="Base_Column_List" >
+    id, driverName, idCard, phone, mobile, gender, birthday, state, carNo, allowCarryVolume, 
+    allowCarryWeight, address, carType, carLength, carDept, carDeptTel, carWidth, goodsHeight, 
+    carFrameNo, engineNo, companyCar
+  </sql>
+  <sql id="Blob_Column_List" >
+    driveLicence, runLicence, bizLicence, insuranceCard, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from driver
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from driver
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itbaizhan.pojo.DriverWithBLOBs" >
+    insert into driver (id, driverName, idCard, 
+      phone, mobile, gender, 
+      birthday, state, carNo, 
+      allowCarryVolume, allowCarryWeight, address, 
+      carType, carLength, carDept, 
+      carDeptTel, carWidth, goodsHeight, 
+      carFrameNo, engineNo, companyCar, 
+      driveLicence, runLicence, bizLicence, 
+      insuranceCard, remark)
+    values (#{id,jdbcType=INTEGER}, #{drivername,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, #{carno,jdbcType=VARCHAR}, 
+      #{allowcarryvolume,jdbcType=INTEGER}, #{allowcarryweight,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{cartype,jdbcType=VARCHAR}, #{carlength,jdbcType=INTEGER}, #{cardept,jdbcType=VARCHAR}, 
+      #{cardepttel,jdbcType=VARCHAR}, #{carwidth,jdbcType=INTEGER}, #{goodsheight,jdbcType=INTEGER}, 
+      #{carframeno,jdbcType=VARCHAR}, #{engineno,jdbcType=VARCHAR}, #{companycar,jdbcType=BIT}, 
+      #{drivelicence,jdbcType=LONGVARCHAR}, #{runlicence,jdbcType=LONGVARCHAR}, #{bizlicence,jdbcType=LONGVARCHAR}, 
+      #{insurancecard,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.itbaizhan.pojo.DriverWithBLOBs" >
+    insert into driver
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="drivername != null" >
+        driverName,
+      </if>
+      <if test="idcard != null" >
+        idCard,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="carno != null" >
+        carNo,
+      </if>
+      <if test="allowcarryvolume != null" >
+        allowCarryVolume,
+      </if>
+      <if test="allowcarryweight != null" >
+        allowCarryWeight,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="cartype != null" >
+        carType,
+      </if>
+      <if test="carlength != null" >
+        carLength,
+      </if>
+      <if test="cardept != null" >
+        carDept,
+      </if>
+      <if test="cardepttel != null" >
+        carDeptTel,
+      </if>
+      <if test="carwidth != null" >
+        carWidth,
+      </if>
+      <if test="goodsheight != null" >
+        goodsHeight,
+      </if>
+      <if test="carframeno != null" >
+        carFrameNo,
+      </if>
+      <if test="engineno != null" >
+        engineNo,
+      </if>
+      <if test="companycar != null" >
+        companyCar,
+      </if>
+      <if test="drivelicence != null" >
+        driveLicence,
+      </if>
+      <if test="runlicence != null" >
+        runLicence,
+      </if>
+      <if test="bizlicence != null" >
+        bizLicence,
+      </if>
+      <if test="insurancecard != null" >
+        insuranceCard,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="drivername != null" >
+        #{drivername,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="carno != null" >
+        #{carno,jdbcType=VARCHAR},
+      </if>
+      <if test="allowcarryvolume != null" >
+        #{allowcarryvolume,jdbcType=INTEGER},
+      </if>
+      <if test="allowcarryweight != null" >
+        #{allowcarryweight,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="cartype != null" >
+        #{cartype,jdbcType=VARCHAR},
+      </if>
+      <if test="carlength != null" >
+        #{carlength,jdbcType=INTEGER},
+      </if>
+      <if test="cardept != null" >
+        #{cardept,jdbcType=VARCHAR},
+      </if>
+      <if test="cardepttel != null" >
+        #{cardepttel,jdbcType=VARCHAR},
+      </if>
+      <if test="carwidth != null" >
+        #{carwidth,jdbcType=INTEGER},
+      </if>
+      <if test="goodsheight != null" >
+        #{goodsheight,jdbcType=INTEGER},
+      </if>
+      <if test="carframeno != null" >
+        #{carframeno,jdbcType=VARCHAR},
+      </if>
+      <if test="engineno != null" >
+        #{engineno,jdbcType=VARCHAR},
+      </if>
+      <if test="companycar != null" >
+        #{companycar,jdbcType=BIT},
+      </if>
+      <if test="drivelicence != null" >
+        #{drivelicence,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="runlicence != null" >
+        #{runlicence,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bizlicence != null" >
+        #{bizlicence,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="insurancecard != null" >
+        #{insurancecard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itbaizhan.pojo.DriverWithBLOBs" >
+    update driver
+    <set >
+      <if test="drivername != null" >
+        driverName = #{drivername,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idCard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="carno != null" >
+        carNo = #{carno,jdbcType=VARCHAR},
+      </if>
+      <if test="allowcarryvolume != null" >
+        allowCarryVolume = #{allowcarryvolume,jdbcType=INTEGER},
+      </if>
+      <if test="allowcarryweight != null" >
+        allowCarryWeight = #{allowcarryweight,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="cartype != null" >
+        carType = #{cartype,jdbcType=VARCHAR},
+      </if>
+      <if test="carlength != null" >
+        carLength = #{carlength,jdbcType=INTEGER},
+      </if>
+      <if test="cardept != null" >
+        carDept = #{cardept,jdbcType=VARCHAR},
+      </if>
+      <if test="cardepttel != null" >
+        carDeptTel = #{cardepttel,jdbcType=VARCHAR},
+      </if>
+      <if test="carwidth != null" >
+        carWidth = #{carwidth,jdbcType=INTEGER},
+      </if>
+      <if test="goodsheight != null" >
+        goodsHeight = #{goodsheight,jdbcType=INTEGER},
+      </if>
+      <if test="carframeno != null" >
+        carFrameNo = #{carframeno,jdbcType=VARCHAR},
+      </if>
+      <if test="engineno != null" >
+        engineNo = #{engineno,jdbcType=VARCHAR},
+      </if>
+      <if test="companycar != null" >
+        companyCar = #{companycar,jdbcType=BIT},
+      </if>
+      <if test="drivelicence != null" >
+        driveLicence = #{drivelicence,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="runlicence != null" >
+        runLicence = #{runlicence,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bizlicence != null" >
+        bizLicence = #{bizlicence,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="insurancecard != null" >
+        insuranceCard = #{insurancecard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.itbaizhan.pojo.DriverWithBLOBs" >
+    update driver
+    set driverName = #{drivername,jdbcType=VARCHAR},
+      idCard = #{idcard,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      carNo = #{carno,jdbcType=VARCHAR},
+      allowCarryVolume = #{allowcarryvolume,jdbcType=INTEGER},
+      allowCarryWeight = #{allowcarryweight,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      carType = #{cartype,jdbcType=VARCHAR},
+      carLength = #{carlength,jdbcType=INTEGER},
+      carDept = #{cardept,jdbcType=VARCHAR},
+      carDeptTel = #{cardepttel,jdbcType=VARCHAR},
+      carWidth = #{carwidth,jdbcType=INTEGER},
+      goodsHeight = #{goodsheight,jdbcType=INTEGER},
+      carFrameNo = #{carframeno,jdbcType=VARCHAR},
+      engineNo = #{engineno,jdbcType=VARCHAR},
+      companyCar = #{companycar,jdbcType=BIT},
+      driveLicence = #{drivelicence,jdbcType=LONGVARCHAR},
+      runLicence = #{runlicence,jdbcType=LONGVARCHAR},
+      bizLicence = #{bizlicence,jdbcType=LONGVARCHAR},
+      insuranceCard = #{insurancecard,jdbcType=LONGVARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itbaizhan.pojo.Driver" >
+    update driver
+    set driverName = #{drivername,jdbcType=VARCHAR},
+      idCard = #{idcard,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      carNo = #{carno,jdbcType=VARCHAR},
+      allowCarryVolume = #{allowcarryvolume,jdbcType=INTEGER},
+      allowCarryWeight = #{allowcarryweight,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      carType = #{cartype,jdbcType=VARCHAR},
+      carLength = #{carlength,jdbcType=INTEGER},
+      carDept = #{cardept,jdbcType=VARCHAR},
+      carDeptTel = #{cardepttel,jdbcType=VARCHAR},
+      carWidth = #{carwidth,jdbcType=INTEGER},
+      goodsHeight = #{goodsheight,jdbcType=INTEGER},
+      carFrameNo = #{carframeno,jdbcType=VARCHAR},
+      engineNo = #{engineno,jdbcType=VARCHAR},
+      companyCar = #{companycar,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbaizhan.mapper.TicketMapper" >
+  <resultMap id="BaseResultMap" type="com.itbaizhan.pojo.Ticket" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billType" property="billtype" jdbcType="VARCHAR" />
+    <result column="billCode" property="billcode" jdbcType="VARCHAR" />
+    <result column="billState" property="billstate" jdbcType="VARCHAR" />
+    <result column="writeDate" property="writedate" jdbcType="TIMESTAMP" />
+    <result column="acceptStation" property="acceptstation" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getTicketTotal" resultType="java.lang.Long">
+    select count(*) from ticket;
+  </select>
+  <select id="getAllTicket" resultMap="BaseResultMap">
+    select * from ticket where billState='未分发' limit #{start},#{count};
+  </select>
+  <sql id="Base_Column_List" >
+    id, billType, billCode, billState, writeDate, acceptStation
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ticket
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ticket
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itbaizhan.pojo.Ticket" >
+    insert into ticket (id, billType, billCode, 
+      billState, writeDate, acceptStation
+      )
+    values (#{id,jdbcType=INTEGER}, #{billtype,jdbcType=VARCHAR}, #{billcode,jdbcType=VARCHAR}, 
+      #{billstate,jdbcType=VARCHAR}, #{writedate,jdbcType=TIMESTAMP}, #{acceptstation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.itbaizhan.pojo.Ticket" >
+    insert into ticket
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billtype != null" >
+        billType,
+      </if>
+      <if test="billcode != null" >
+        billCode,
+      </if>
+      <if test="billstate != null" >
+        billState,
+      </if>
+      <if test="writedate != null" >
+        writeDate,
+      </if>
+      <if test="acceptstation != null" >
+        acceptStation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billtype != null" >
+        #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="billcode != null" >
+        #{billcode,jdbcType=VARCHAR},
+      </if>
+      <if test="billstate != null" >
+        #{billstate,jdbcType=VARCHAR},
+      </if>
+      <if test="writedate != null" >
+        #{writedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acceptstation != null" >
+        #{acceptstation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itbaizhan.pojo.Ticket" >
+    update ticket
+    <set >
+      <if test="billtype != null" >
+        billType = #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="billcode != null" >
+        billCode = #{billcode,jdbcType=VARCHAR},
+      </if>
+      <if test="billstate != null" >
+        billState = #{billstate,jdbcType=VARCHAR},
+      </if>
+      <if test="writedate != null" >
+        writeDate = #{writedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acceptstation != null" >
+        acceptStation = #{acceptstation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itbaizhan.pojo.Ticket" >
+    update ticket
+    set billType = #{billtype,jdbcType=VARCHAR},
+      billCode = #{billcode,jdbcType=VARCHAR},
+      billState = #{billstate,jdbcType=VARCHAR},
+      writeDate = #{writedate,jdbcType=TIMESTAMP},
+      acceptStation = #{acceptstation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbaizhan.mapper.CarriageContractMapper" >
+  <resultMap id="BaseResultMap" type="com.itbaizhan.pojo.CarriageContract" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="contractCode" property="contractcode" jdbcType="VARCHAR" />
+    <result column="driverName" property="drivername" jdbcType="VARCHAR" />
+    <result column="driverId" property="driverid" jdbcType="INTEGER" />
+    <result column="sendGoodsAddr" property="sendgoodsaddr" jdbcType="VARCHAR" />
+    <result column="receiveGoodsAddr" property="receivegoodsaddr" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="receiveCustomer" property="receivecustomer" jdbcType="VARCHAR" />
+    <result column="totalFee" property="totalfee" jdbcType="DOUBLE" />
+    <result column="insurance" property="insurance" jdbcType="DOUBLE" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getCarriageContractCount" resultType="java.lang.Long">
+    select count(*) from carriage_contract
+  </select>
+  <select id="getAllCarriageContract" resultMap="BaseResultMap">
+    select * from carriage_contract limit #{start},#{count}
+  </select>
+  <select id="getMaxId" resultType="java.lang.Integer">
+    select max(id) from carriage_contract
+  </select>
+  <select id="getGoodsBillCode" resultType="java.lang.String">
+    SELECT gb.`goodsBillCode` FROM goodsbill gb WHERE gb.`goodsBillCode` NOT IN (SELECT cc.`contractCode` FROM carriage_contract cc)
+  </select>
+  <sql id="Base_Column_List" >
+    id, contractCode, driverName, driverId, sendGoodsAddr, receiveGoodsAddr, startTime, 
+    endTime, receiveCustomer, totalFee, insurance, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from carriage_contract
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from carriage_contract
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itbaizhan.pojo.CarriageContract" >
+    insert into carriage_contract (id, contractCode, driverName, 
+      driverId, sendGoodsAddr, receiveGoodsAddr, 
+      startTime, endTime, receiveCustomer, 
+      totalFee, insurance, state
+      )
+    values (#{id,jdbcType=INTEGER}, #{contractcode,jdbcType=VARCHAR}, #{drivername,jdbcType=VARCHAR}, 
+      #{driverid,jdbcType=INTEGER}, #{sendgoodsaddr,jdbcType=VARCHAR}, #{receivegoodsaddr,jdbcType=VARCHAR}, 
+      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{receivecustomer,jdbcType=VARCHAR}, 
+      #{totalfee,jdbcType=DOUBLE}, #{insurance,jdbcType=DOUBLE}, #{state,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.itbaizhan.pojo.CarriageContract" >
+    insert into carriage_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="contractcode != null" >
+        contractCode,
+      </if>
+      <if test="drivername != null" >
+        driverName,
+      </if>
+      <if test="driverid != null" >
+        driverId,
+      </if>
+      <if test="sendgoodsaddr != null" >
+        sendGoodsAddr,
+      </if>
+      <if test="receivegoodsaddr != null" >
+        receiveGoodsAddr,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="receivecustomer != null" >
+        receiveCustomer,
+      </if>
+      <if test="totalfee != null" >
+        totalFee,
+      </if>
+      <if test="insurance != null" >
+        insurance,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="contractcode != null" >
+        #{contractcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drivername != null" >
+        #{drivername,jdbcType=VARCHAR},
+      </if>
+      <if test="driverid != null" >
+        #{driverid,jdbcType=INTEGER},
+      </if>
+      <if test="sendgoodsaddr != null" >
+        #{sendgoodsaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="receivegoodsaddr != null" >
+        #{receivegoodsaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivecustomer != null" >
+        #{receivecustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="totalfee != null" >
+        #{totalfee,jdbcType=DOUBLE},
+      </if>
+      <if test="insurance != null" >
+        #{insurance,jdbcType=DOUBLE},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itbaizhan.pojo.CarriageContract" >
+    update carriage_contract
+    <set >
+      <if test="contractcode != null" >
+        contractCode = #{contractcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drivername != null" >
+        driverName = #{drivername,jdbcType=VARCHAR},
+      </if>
+      <if test="driverid != null" >
+        driverId = #{driverid,jdbcType=INTEGER},
+      </if>
+      <if test="sendgoodsaddr != null" >
+        sendGoodsAddr = #{sendgoodsaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="receivegoodsaddr != null" >
+        receiveGoodsAddr = #{receivegoodsaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivecustomer != null" >
+        receiveCustomer = #{receivecustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="totalfee != null" >
+        totalFee = #{totalfee,jdbcType=DOUBLE},
+      </if>
+      <if test="insurance != null" >
+        insurance = #{insurance,jdbcType=DOUBLE},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itbaizhan.pojo.CarriageContract" >
+    update carriage_contract
+    set contractCode = #{contractcode,jdbcType=VARCHAR},
+      driverName = #{drivername,jdbcType=VARCHAR},
+      driverId = #{driverid,jdbcType=INTEGER},
+      sendGoodsAddr = #{sendgoodsaddr,jdbcType=VARCHAR},
+      receiveGoodsAddr = #{receivegoodsaddr,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      receiveCustomer = #{receivecustomer,jdbcType=VARCHAR},
+      totalFee = #{totalfee,jdbcType=DOUBLE},
+      insurance = #{insurance,jdbcType=DOUBLE},
+      state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

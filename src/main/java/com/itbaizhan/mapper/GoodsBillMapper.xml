@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbaizhan.mapper.GoodsBillMapper">
+    <resultMap id="BaseResultMap" type="com.itbaizhan.pojo.GoodsBill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="goodsBillCode" property="goodsbillcode" jdbcType="CHAR"/>
+        <result column="sendGoodsCustomerNo" property="sendgoodscustomerno" jdbcType="CHAR"/>
+        <result column="sendGoodsCustomer" property="sendgoodscustomer" jdbcType="VARCHAR"/>
+        <result column="sendGoodsCustomerTel" property="sendgoodscustomertel" jdbcType="CHAR"/>
+        <result column="sendGoodsCustomerAddr" property="sendgoodscustomeraddr" jdbcType="VARCHAR"/>
+        <result column="receiveGoodsCustomerCode" property="receivegoodscustomercode" jdbcType="CHAR"/>
+        <result column="receiveGoodsCustomer" property="receivegoodscustomer" jdbcType="VARCHAR"/>
+        <result column="receiveGoodsCustomerTel" property="receivegoodscustomertel" jdbcType="CHAR"/>
+        <result column="sendGoodsDate" property="sendgoodsdate" jdbcType="TIMESTAMP"/>
+        <result column="sendGoodsAddr" property="sendgoodsaddr" jdbcType="VARCHAR"/>
+        <result column="predeliveryDate" property="predeliverydate" jdbcType="TIMESTAMP"/>
+        <result column="factDealDate" property="factdealdate" jdbcType="TIMESTAMP"/>
+        <result column="helpAcceptPayment" property="helpacceptpayment" jdbcType="DOUBLE"/>
+        <result column="acceptProcedureRate" property="acceptprocedurerate" jdbcType="DOUBLE"/>
+        <result column="payMode" property="paymode" jdbcType="CHAR"/>
+        <result column="fetchGoodsMode" property="fetchgoodsmode" jdbcType="VARCHAR"/>
+        <result column="writeBillPerson" property="writebillperson" jdbcType="VARCHAR"/>
+        <result column="writeDate" property="writedate" jdbcType="TIMESTAMP"/>
+        <result column="validity" property="validity" jdbcType="INTEGER"/>
+        <result column="ifAudit" property="ifaudit" jdbcType="BIT"/>
+        <result column="ifSettleAccounts" property="ifsettleaccounts" jdbcType="BIT"/>
+        <result column="transferStation" property="transferstation" jdbcType="VARCHAR"/>
+        <result column="transferFee" property="transferfee" jdbcType="DOUBLE"/>
+        <result column="reduceFund" property="reducefund" jdbcType="DOUBLE"/>
+        <result column="payKickback" property="paykickback" jdbcType="DOUBLE"/>
+        <result column="moneyOfChangePay" property="moneyofchangepay" jdbcType="DOUBLE"/>
+        <result column="carryGoodsFee" property="carrygoodsfee" jdbcType="DOUBLE"/>
+        <result column="carriage" property="carriage" jdbcType="DOUBLE"/>
+        <result column="insurance" property="insurance" jdbcType="DOUBLE"/>
+        <result column="employeeId" property="employeeid" jdbcType="INTEGER"/>
+        <result column="acceptionStation" property="acceptionstation" jdbcType="VARCHAR"/>
+        <result column="sendGoodsCustomerMobile" property="sendgoodscustomermobile" jdbcType="VARCHAR"/>
+        <result column="receiveGoodsCustomerMobile" property="receivegoodscustomermobile" jdbcType="VARCHAR"/>
+        <result column="receiveGoodsCustomerAddr" property="receivegoodscustomeraddr" jdbcType="VARCHAR"/>
+        <result column="receiveGoodsAddr" property="receivegoodsaddr" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.itbaizhan.pojo.GoodsBill" extends="BaseResultMap">
+        <result column="remarker" property="remarker" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <select id="getGoodsBillByCode" resultMap="ResultMapWithBLOBs">
+        select * from goodsbill where goodsBillCode=#{code}
+    </select>
+    <delete id="deleteGoodsBillById">
+        delete from goodsbill where id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <select id="getMaxId" resultType="java.lang.Integer">
+    select max(id) from goodsbill;
+  </select>
+    <select id="getProdFormTotal" resultType="java.lang.Long">
+        select count(*) from goodsbill
+        <if test="state!=null and state!=''">
+            where state=#{state}
+        </if>
+    </select>
+    <select id="getAllProdFormsByPage" resultMap="ResultMapWithBLOBs">
+        select * from goodsbill
+        <if test="state!=null and state !=''">
+            where state=#{state}
+        </if>
+        limit #{start},#{count}
+    </select>
+    <sql id="Base_Column_List">
+    id, goodsBillCode, sendGoodsCustomerNo, sendGoodsCustomer, sendGoodsCustomerTel, 
+    sendGoodsCustomerAddr, receiveGoodsCustomerCode, receiveGoodsCustomer, receiveGoodsCustomerTel, 
+    sendGoodsDate, sendGoodsAddr, predeliveryDate, factDealDate, helpAcceptPayment, acceptProcedureRate, 
+    payMode, fetchGoodsMode, writeBillPerson, writeDate, validity, ifAudit, ifSettleAccounts, 
+    transferStation, transferFee, reduceFund, payKickback, moneyOfChangePay, carryGoodsFee, 
+    carriage, insurance, employeeId, acceptionStation, sendGoodsCustomerMobile, receiveGoodsCustomerMobile
+  </sql>
+    <sql id="Blob_Column_List">
+    remarker
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from goodsbill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goodsbill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.itbaizhan.pojo.GoodsBill">
+    insert into goodsbill (id, goodsBillCode, sendGoodsCustomerNo, 
+      sendGoodsCustomer, sendGoodsCustomerTel, sendGoodsCustomerAddr, 
+      receiveGoodsCustomerCode, receiveGoodsCustomer, 
+      receiveGoodsCustomerTel, sendGoodsDate, 
+      sendGoodsAddr, predeliveryDate, factDealDate, 
+      helpAcceptPayment, acceptProcedureRate, payMode, 
+      fetchGoodsMode, writeBillPerson, writeDate, 
+      validity, ifAudit, ifSettleAccounts, 
+      transferStation, transferFee, reduceFund, 
+      payKickback, moneyOfChangePay, carryGoodsFee, 
+      carriage, insurance, employeeId, 
+      acceptionStation, sendGoodsCustomerMobile, 
+      receiveGoodsCustomerMobile, remarker
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodsbillcode,jdbcType=CHAR}, #{sendgoodscustomerno,jdbcType=CHAR}, 
+      #{sendgoodscustomer,jdbcType=VARCHAR}, #{sendgoodscustomertel,jdbcType=CHAR}, #{sendgoodscustomeraddr,jdbcType=VARCHAR}, 
+      #{receivegoodscustomercode,jdbcType=CHAR}, #{receivegoodscustomer,jdbcType=VARCHAR}, 
+      #{receivegoodscustomertel,jdbcType=CHAR}, #{sendgoodsdate,jdbcType=TIMESTAMP}, 
+      #{sendgoodsaddr,jdbcType=VARCHAR}, #{predeliverydate,jdbcType=TIMESTAMP}, #{factdealdate,jdbcType=TIMESTAMP}, 
+      #{helpacceptpayment,jdbcType=DOUBLE}, #{acceptprocedurerate,jdbcType=DOUBLE}, #{paymode,jdbcType=CHAR}, 
+      #{fetchgoodsmode,jdbcType=VARCHAR}, #{writebillperson,jdbcType=VARCHAR}, #{writedate,jdbcType=TIMESTAMP}, 
+      #{validity,jdbcType=INTEGER}, #{ifaudit,jdbcType=BIT}, #{ifsettleaccounts,jdbcType=BIT}, 
+      #{transferstation,jdbcType=VARCHAR}, #{transferfee,jdbcType=DOUBLE}, #{reducefund,jdbcType=DOUBLE}, 
+      #{paykickback,jdbcType=DOUBLE}, #{moneyofchangepay,jdbcType=DOUBLE}, #{carrygoodsfee,jdbcType=DOUBLE}, 
+      #{carriage,jdbcType=DOUBLE}, #{insurance,jdbcType=DOUBLE}, #{employeeid,jdbcType=INTEGER}, 
+      #{acceptionstation,jdbcType=VARCHAR}, #{sendgoodscustomermobile,jdbcType=VARCHAR}, 
+      #{receivegoodscustomermobile,jdbcType=VARCHAR}, #{remarker,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.itbaizhan.pojo.GoodsBill">
+        insert into goodsbill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsbillcode != null">
+                goodsBillCode,
+            </if>
+            <if test="sendgoodscustomerno != null">
+                sendGoodsCustomerNo,
+            </if>
+            <if test="sendgoodscustomer != null">
+                sendGoodsCustomer,
+            </if>
+            <if test="sendgoodscustomertel != null">
+                sendGoodsCustomerTel,
+            </if>
+            <if test="sendgoodscustomeraddr != null">
+                sendGoodsCustomerAddr,
+            </if>
+            <if test="receivegoodscustomercode != null">
+                receiveGoodsCustomerCode,
+            </if>
+            <if test="receivegoodscustomer != null">
+                receiveGoodsCustomer,
+            </if>
+            <if test="receivegoodscustomertel != null">
+                receiveGoodsCustomerTel,
+            </if>
+            <if test="sendgoodsdate != null">
+                sendGoodsDate,
+            </if>
+            <if test="sendgoodsaddr != null">
+                sendGoodsAddr,
+            </if>
+            <if test="predeliverydate != null">
+                predeliveryDate,
+            </if>
+            <if test="factdealdate != null">
+                factDealDate,
+            </if>
+            <if test="helpacceptpayment != null">
+                helpAcceptPayment,
+            </if>
+            <if test="acceptprocedurerate != null">
+                acceptProcedureRate,
+            </if>
+            <if test="paymode != null">
+                payMode,
+            </if>
+            <if test="fetchgoodsmode != null">
+                fetchGoodsMode,
+            </if>
+            <if test="writebillperson != null">
+                writeBillPerson,
+            </if>
+            <if test="writedate != null">
+                writeDate,
+            </if>
+            <if test="validity != null">
+                validity,
+            </if>
+            <if test="ifaudit != null">
+                ifAudit,
+            </if>
+            <if test="ifsettleaccounts != null">
+                ifSettleAccounts,
+            </if>
+            <if test="transferstation != null">
+                transferStation,
+            </if>
+            <if test="transferfee != null">
+                transferFee,
+            </if>
+            <if test="reducefund != null">
+                reduceFund,
+            </if>
+            <if test="paykickback != null">
+                payKickback,
+            </if>
+            <if test="moneyofchangepay != null">
+                moneyOfChangePay,
+            </if>
+            <if test="carrygoodsfee != null">
+                carryGoodsFee,
+            </if>
+            <if test="carriage != null">
+                carriage,
+            </if>
+            <if test="insurance != null">
+                insurance,
+            </if>
+            <if test="employeeid != null">
+                employeeId,
+            </if>
+            <if test="acceptionstation != null">
+                acceptionStation,
+            </if>
+            <if test="sendgoodscustomermobile != null">
+                sendGoodsCustomerMobile,
+            </if>
+            <if test="receivegoodscustomermobile != null">
+                receiveGoodsCustomerMobile,
+            </if>
+            <if test="remarker != null">
+                remarker,
+            </if>
+            <if test="receivegoodsaddr != null">
+                receivegoodsaddr,
+            </if>
+            <if test="receivegoodscustomeraddr != null">
+                receivegoodscustomeraddr,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsbillcode != null">
+                #{goodsbillcode,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodscustomerno != null">
+                #{sendgoodscustomerno,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodscustomer != null">
+                #{sendgoodscustomer,jdbcType=VARCHAR},
+            </if>
+            <if test="sendgoodscustomertel != null">
+                #{sendgoodscustomertel,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodscustomeraddr != null">
+                #{sendgoodscustomeraddr,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomercode != null">
+                #{receivegoodscustomercode,jdbcType=CHAR},
+            </if>
+            <if test="receivegoodscustomer != null">
+                #{receivegoodscustomer,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomertel != null">
+                #{receivegoodscustomertel,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodsdate != null">
+                #{sendgoodsdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sendgoodsaddr != null">
+                #{sendgoodsaddr,jdbcType=VARCHAR},
+            </if>
+            <if test="predeliverydate != null">
+                #{predeliverydate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="factdealdate != null">
+                #{factdealdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="helpacceptpayment != null">
+                #{helpacceptpayment,jdbcType=DOUBLE},
+            </if>
+            <if test="acceptprocedurerate != null">
+                #{acceptprocedurerate,jdbcType=DOUBLE},
+            </if>
+            <if test="paymode != null">
+                #{paymode,jdbcType=CHAR},
+            </if>
+            <if test="fetchgoodsmode != null">
+                #{fetchgoodsmode,jdbcType=VARCHAR},
+            </if>
+            <if test="writebillperson != null">
+                #{writebillperson,jdbcType=VARCHAR},
+            </if>
+            <if test="writedate != null">
+                #{writedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validity != null">
+                #{validity,jdbcType=INTEGER},
+            </if>
+            <if test="ifaudit != null">
+                #{ifaudit,jdbcType=BIT},
+            </if>
+            <if test="ifsettleaccounts != null">
+                #{ifsettleaccounts,jdbcType=BIT},
+            </if>
+            <if test="transferstation != null">
+                #{transferstation,jdbcType=VARCHAR},
+            </if>
+            <if test="transferfee != null">
+                #{transferfee,jdbcType=DOUBLE},
+            </if>
+            <if test="reducefund != null">
+                #{reducefund,jdbcType=DOUBLE},
+            </if>
+            <if test="paykickback != null">
+                #{paykickback,jdbcType=DOUBLE},
+            </if>
+            <if test="moneyofchangepay != null">
+                #{moneyofchangepay,jdbcType=DOUBLE},
+            </if>
+            <if test="carrygoodsfee != null">
+                #{carrygoodsfee,jdbcType=DOUBLE},
+            </if>
+            <if test="carriage != null">
+                #{carriage,jdbcType=DOUBLE},
+            </if>
+            <if test="insurance != null">
+                #{insurance,jdbcType=DOUBLE},
+            </if>
+            <if test="employeeid != null">
+                #{employeeid,jdbcType=INTEGER},
+            </if>
+            <if test="acceptionstation != null">
+                #{acceptionstation,jdbcType=VARCHAR},
+            </if>
+            <if test="sendgoodscustomermobile != null">
+                #{sendgoodscustomermobile,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomermobile != null">
+                #{receivegoodscustomermobile,jdbcType=VARCHAR},
+            </if>
+            <if test="remarker != null">
+                #{remarker,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="receivegoodsaddr != null">
+                #{receivegoodsaddr,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomeraddr != null">
+                #{receivegoodscustomeraddr,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.itbaizhan.pojo.GoodsBill">
+        update goodsbill
+        <set>
+            <if test="goodsbillcode != null">
+                goodsBillCode = #{goodsbillcode,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodscustomerno != null">
+                sendGoodsCustomerNo = #{sendgoodscustomerno,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodscustomer != null">
+                sendGoodsCustomer = #{sendgoodscustomer,jdbcType=VARCHAR},
+            </if>
+            <if test="sendgoodscustomertel != null">
+                sendGoodsCustomerTel = #{sendgoodscustomertel,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodscustomeraddr != null">
+                sendGoodsCustomerAddr = #{sendgoodscustomeraddr,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomercode != null">
+                receiveGoodsCustomerCode = #{receivegoodscustomercode,jdbcType=CHAR},
+            </if>
+            <if test="receivegoodscustomer != null">
+                receiveGoodsCustomer = #{receivegoodscustomer,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomertel != null">
+                receiveGoodsCustomerTel = #{receivegoodscustomertel,jdbcType=CHAR},
+            </if>
+            <if test="sendgoodsdate != null">
+                sendGoodsDate = #{sendgoodsdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sendgoodsaddr != null">
+                sendGoodsAddr = #{sendgoodsaddr,jdbcType=VARCHAR},
+            </if>
+            <if test="predeliverydate != null">
+                predeliveryDate = #{predeliverydate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="factdealdate != null">
+                factDealDate = #{factdealdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="helpacceptpayment != null">
+                helpAcceptPayment = #{helpacceptpayment,jdbcType=DOUBLE},
+            </if>
+            <if test="acceptprocedurerate != null">
+                acceptProcedureRate = #{acceptprocedurerate,jdbcType=DOUBLE},
+            </if>
+            <if test="paymode != null">
+                payMode = #{paymode,jdbcType=CHAR},
+            </if>
+            <if test="fetchgoodsmode != null">
+                fetchGoodsMode = #{fetchgoodsmode,jdbcType=VARCHAR},
+            </if>
+            <if test="writebillperson != null">
+                writeBillPerson = #{writebillperson,jdbcType=VARCHAR},
+            </if>
+            <if test="writedate != null">
+                writeDate = #{writedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="validity != null">
+                validity = #{validity,jdbcType=INTEGER},
+            </if>
+            <if test="ifaudit != null">
+                ifAudit = #{ifaudit,jdbcType=BIT},
+            </if>
+            <if test="ifsettleaccounts != null">
+                ifSettleAccounts = #{ifsettleaccounts,jdbcType=BIT},
+            </if>
+            <if test="transferstation != null">
+                transferStation = #{transferstation,jdbcType=VARCHAR},
+            </if>
+            <if test="transferfee != null">
+                transferFee = #{transferfee,jdbcType=DOUBLE},
+            </if>
+            <if test="reducefund != null">
+                reduceFund = #{reducefund,jdbcType=DOUBLE},
+            </if>
+            <if test="paykickback != null">
+                payKickback = #{paykickback,jdbcType=DOUBLE},
+            </if>
+            <if test="moneyofchangepay != null">
+                moneyOfChangePay = #{moneyofchangepay,jdbcType=DOUBLE},
+            </if>
+            <if test="carrygoodsfee != null">
+                carryGoodsFee = #{carrygoodsfee,jdbcType=DOUBLE},
+            </if>
+            <if test="carriage != null">
+                carriage = #{carriage,jdbcType=DOUBLE},
+            </if>
+            <if test="insurance != null">
+                insurance = #{insurance,jdbcType=DOUBLE},
+            </if>
+            <if test="employeeid != null">
+                employeeId = #{employeeid,jdbcType=INTEGER},
+            </if>
+            <if test="acceptionstation != null">
+                acceptionStation = #{acceptionstation,jdbcType=VARCHAR},
+            </if>
+            <if test="sendgoodscustomermobile != null">
+                sendGoodsCustomerMobile = #{sendgoodscustomermobile,jdbcType=VARCHAR},
+            </if>
+            <if test="receivegoodscustomermobile != null">
+                receiveGoodsCustomerMobile = #{receivegoodscustomermobile,jdbcType=VARCHAR},
+            </if>
+            <if test="remarker != null">
+                remarker = #{remarker,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.itbaizhan.pojo.GoodsBill">
+    update goodsbill
+    set goodsBillCode = #{goodsbillcode,jdbcType=CHAR},
+      sendGoodsCustomerNo = #{sendgoodscustomerno,jdbcType=CHAR},
+      sendGoodsCustomer = #{sendgoodscustomer,jdbcType=VARCHAR},
+      sendGoodsCustomerTel = #{sendgoodscustomertel,jdbcType=CHAR},
+      sendGoodsCustomerAddr = #{sendgoodscustomeraddr,jdbcType=VARCHAR},
+      receiveGoodsCustomerCode = #{receivegoodscustomercode,jdbcType=CHAR},
+      receiveGoodsCustomer = #{receivegoodscustomer,jdbcType=VARCHAR},
+      receiveGoodsCustomerTel = #{receivegoodscustomertel,jdbcType=CHAR},
+      sendGoodsDate = #{sendgoodsdate,jdbcType=TIMESTAMP},
+      sendGoodsAddr = #{sendgoodsaddr,jdbcType=VARCHAR},
+      predeliveryDate = #{predeliverydate,jdbcType=TIMESTAMP},
+      factDealDate = #{factdealdate,jdbcType=TIMESTAMP},
+      helpAcceptPayment = #{helpacceptpayment,jdbcType=DOUBLE},
+      acceptProcedureRate = #{acceptprocedurerate,jdbcType=DOUBLE},
+      payMode = #{paymode,jdbcType=CHAR},
+      fetchGoodsMode = #{fetchgoodsmode,jdbcType=VARCHAR},
+      writeBillPerson = #{writebillperson,jdbcType=VARCHAR},
+      writeDate = #{writedate,jdbcType=TIMESTAMP},
+      validity = #{validity,jdbcType=INTEGER},
+      ifAudit = #{ifaudit,jdbcType=BIT},
+      ifSettleAccounts = #{ifsettleaccounts,jdbcType=BIT},
+      transferStation = #{transferstation,jdbcType=VARCHAR},
+      transferFee = #{transferfee,jdbcType=DOUBLE},
+      reduceFund = #{reducefund,jdbcType=DOUBLE},
+      payKickback = #{paykickback,jdbcType=DOUBLE},
+      moneyOfChangePay = #{moneyofchangepay,jdbcType=DOUBLE},
+      carryGoodsFee = #{carrygoodsfee,jdbcType=DOUBLE},
+      carriage = #{carriage,jdbcType=DOUBLE},
+      insurance = #{insurance,jdbcType=DOUBLE},
+      employeeId = #{employeeid,jdbcType=INTEGER},
+      acceptionStation = #{acceptionstation,jdbcType=VARCHAR},
+      sendGoodsCustomerMobile = #{sendgoodscustomermobile,jdbcType=VARCHAR},
+      receiveGoodsCustomerMobile = #{receivegoodscustomermobile,jdbcType=VARCHAR},
+      remarker = #{remarker,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.itbaizhan.pojo.GoodsBill">
+    update goodsbill
+    set goodsBillCode = #{goodsbillcode,jdbcType=CHAR},
+      sendGoodsCustomerNo = #{sendgoodscustomerno,jdbcType=CHAR},
+      sendGoodsCustomer = #{sendgoodscustomer,jdbcType=VARCHAR},
+      sendGoodsCustomerTel = #{sendgoodscustomertel,jdbcType=CHAR},
+      sendGoodsCustomerAddr = #{sendgoodscustomeraddr,jdbcType=VARCHAR},
+      receiveGoodsCustomerCode = #{receivegoodscustomercode,jdbcType=CHAR},
+      receiveGoodsCustomer = #{receivegoodscustomer,jdbcType=VARCHAR},
+      receiveGoodsCustomerTel = #{receivegoodscustomertel,jdbcType=CHAR},
+      sendGoodsDate = #{sendgoodsdate,jdbcType=TIMESTAMP},
+      sendGoodsAddr = #{sendgoodsaddr,jdbcType=VARCHAR},
+      predeliveryDate = #{predeliverydate,jdbcType=TIMESTAMP},
+      factDealDate = #{factdealdate,jdbcType=TIMESTAMP},
+      helpAcceptPayment = #{helpacceptpayment,jdbcType=DOUBLE},
+      acceptProcedureRate = #{acceptprocedurerate,jdbcType=DOUBLE},
+      payMode = #{paymode,jdbcType=CHAR},
+      fetchGoodsMode = #{fetchgoodsmode,jdbcType=VARCHAR},
+      writeBillPerson = #{writebillperson,jdbcType=VARCHAR},
+      writeDate = #{writedate,jdbcType=TIMESTAMP},
+      validity = #{validity,jdbcType=INTEGER},
+      ifAudit = #{ifaudit,jdbcType=BIT},
+      ifSettleAccounts = #{ifsettleaccounts,jdbcType=BIT},
+      transferStation = #{transferstation,jdbcType=VARCHAR},
+      transferFee = #{transferfee,jdbcType=DOUBLE},
+      reduceFund = #{reducefund,jdbcType=DOUBLE},
+      payKickback = #{paykickback,jdbcType=DOUBLE},
+      moneyOfChangePay = #{moneyofchangepay,jdbcType=DOUBLE},
+      carryGoodsFee = #{carrygoodsfee,jdbcType=DOUBLE},
+      carriage = #{carriage,jdbcType=DOUBLE},
+      insurance = #{insurance,jdbcType=DOUBLE},
+      employeeId = #{employeeid,jdbcType=INTEGER},
+      acceptionStation = #{acceptionstation,jdbcType=VARCHAR},
+      sendGoodsCustomerMobile = #{sendgoodscustomermobile,jdbcType=VARCHAR},
+      receiveGoodsCustomerMobile = #{receivegoodscustomermobile,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

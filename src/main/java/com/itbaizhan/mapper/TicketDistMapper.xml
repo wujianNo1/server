@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbaizhan.mapper.TicketDistMapper" >
+  <resultMap id="BaseResultMap" type="com.itbaizhan.pojo.TicketDist" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billType" property="billtype" jdbcType="VARCHAR" />
+    <result column="billStartCode" property="billstartcode" jdbcType="VARCHAR" />
+    <result column="billEndCode" property="billendcode" jdbcType="VARCHAR" />
+    <result column="receiveBillPerson" property="receivebillperson" jdbcType="VARCHAR" />
+    <result column="driverId" property="driverid" jdbcType="INTEGER" />
+    <result column="acceptStation" property="acceptstation" jdbcType="VARCHAR" />
+    <result column="receiveBillTime" property="receivebilltime" jdbcType="TIMESTAMP" />
+    <result column="releasePerson" property="releaseperson" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getTotal" resultType="java.lang.Long">
+    select count(*) from ticket_dist ;
+  </select>
+  <select id="getAllTicketDist" resultMap="BaseResultMap">
+    select * from ticket_dist limit #{start},#{count};
+  </select>
+  <sql id="Base_Column_List" >
+    id, billType, billStartCode, billEndCode, receiveBillPerson, driverId, acceptStation, 
+    receiveBillTime, releasePerson
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ticket_dist
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ticket_dist
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itbaizhan.pojo.TicketDist" >
+    insert into ticket_dist (id, billType, billStartCode, 
+      billEndCode, receiveBillPerson, driverId, 
+      acceptStation, receiveBillTime, releasePerson
+      )
+    values (#{id,jdbcType=INTEGER}, #{billtype,jdbcType=VARCHAR}, #{billstartcode,jdbcType=VARCHAR}, 
+      #{billendcode,jdbcType=VARCHAR}, #{receivebillperson,jdbcType=VARCHAR}, #{driverid,jdbcType=INTEGER}, 
+      #{acceptstation,jdbcType=VARCHAR}, #{receivebilltime,jdbcType=TIMESTAMP}, #{releaseperson,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.itbaizhan.pojo.TicketDist" >
+    insert into ticket_dist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billtype != null" >
+        billType,
+      </if>
+      <if test="billstartcode != null" >
+        billStartCode,
+      </if>
+      <if test="billendcode != null" >
+        billEndCode,
+      </if>
+      <if test="receivebillperson != null" >
+        receiveBillPerson,
+      </if>
+      <if test="driverid != null" >
+        driverId,
+      </if>
+      <if test="acceptstation != null" >
+        acceptStation,
+      </if>
+      <if test="receivebilltime != null" >
+        receiveBillTime,
+      </if>
+      <if test="releaseperson != null" >
+        releasePerson,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billtype != null" >
+        #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="billstartcode != null" >
+        #{billstartcode,jdbcType=VARCHAR},
+      </if>
+      <if test="billendcode != null" >
+        #{billendcode,jdbcType=VARCHAR},
+      </if>
+      <if test="receivebillperson != null" >
+        #{receivebillperson,jdbcType=VARCHAR},
+      </if>
+      <if test="driverid != null" >
+        #{driverid,jdbcType=INTEGER},
+      </if>
+      <if test="acceptstation != null" >
+        #{acceptstation,jdbcType=VARCHAR},
+      </if>
+      <if test="receivebilltime != null" >
+        #{receivebilltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releaseperson != null" >
+        #{releaseperson,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itbaizhan.pojo.TicketDist" >
+    update ticket_dist
+    <set >
+      <if test="billtype != null" >
+        billType = #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="billstartcode != null" >
+        billStartCode = #{billstartcode,jdbcType=VARCHAR},
+      </if>
+      <if test="billendcode != null" >
+        billEndCode = #{billendcode,jdbcType=VARCHAR},
+      </if>
+      <if test="receivebillperson != null" >
+        receiveBillPerson = #{receivebillperson,jdbcType=VARCHAR},
+      </if>
+      <if test="driverid != null" >
+        driverId = #{driverid,jdbcType=INTEGER},
+      </if>
+      <if test="acceptstation != null" >
+        acceptStation = #{acceptstation,jdbcType=VARCHAR},
+      </if>
+      <if test="receivebilltime != null" >
+        receiveBillTime = #{receivebilltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releaseperson != null" >
+        releasePerson = #{releaseperson,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itbaizhan.pojo.TicketDist" >
+    update ticket_dist
+    set billType = #{billtype,jdbcType=VARCHAR},
+      billStartCode = #{billstartcode,jdbcType=VARCHAR},
+      billEndCode = #{billendcode,jdbcType=VARCHAR},
+      receiveBillPerson = #{receivebillperson,jdbcType=VARCHAR},
+      driverId = #{driverid,jdbcType=INTEGER},
+      acceptStation = #{acceptstation,jdbcType=VARCHAR},
+      receiveBillTime = #{receivebilltime,jdbcType=TIMESTAMP},
+      releasePerson = #{releaseperson,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
